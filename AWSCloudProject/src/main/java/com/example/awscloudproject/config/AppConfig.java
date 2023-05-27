@@ -9,9 +9,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @SecurityScheme(
-        name = "basicAuth",
+        name = "Bearer Authentication",
         type = SecuritySchemeType.HTTP,
-        scheme = "basic"
+        bearerFormat = "JWT",
+        scheme = "bearer"
 )
 public class AppConfig {
     @Bean

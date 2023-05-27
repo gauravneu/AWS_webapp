@@ -38,7 +38,7 @@ public class UserDetailService implements UserDetailsService {
         }
     }
 
-    public Optional<UserEntity> getUserEntityByEmail(String email){
+    public Optional<UserEntity> getUserEntityByEmail(String email) {
         Optional<UserEntity> opt = userRepository.findUserByEmail(email);
         return opt;
     }
