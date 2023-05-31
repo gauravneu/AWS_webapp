@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,15 +27,16 @@ public class UserController {
 
     @PostMapping("/saveUser")
     public String saveUser(@RequestBody UserDto user) {
-        String userId = userDetailService.saveUser(user);
-        return userId;
+        return userDetailService.saveUser(user);
+  //      return userId;
     }
 
     @Operation(security = @SecurityRequirement(name = "Bearer Authentication"))
     @GetMapping("/getUser")
     public String getUser(@RequestParam String email) {
-        System.out.println(userDetailService.getUserEntityByEmail(email));
-        if (!userDetailService.getUserEntityByEmail(email).isEmpty()) {
+        System.out.println(MDC.get(email));
+//        System.out.println(userDetailService.getUserEntityByEmail(email));
+        if (userDetailService.getUserEntityByEmail(email).isPresent()) {
             return "User Found";
         }
         return "User Not Found";
@@ -56,5 +58,11 @@ public class UserController {
             throw new CloudProjectException("Cloud Ex" ,new RuntimeException());
         }
 
+    }
+
+    @PutMapping("/updateUser")
+    public String updateUser(@RequestBody UserDto userDto){
+
+        return "Hello";
     }
 }

@@ -1,6 +1,6 @@
 package com.example.awscloudproject.config;
 
-import com.example.awscloudproject.exception.CloudProjectException;
+
 import com.example.awscloudproject.service.JWTUtility;
 import com.example.awscloudproject.service.UserDetailService;
 import jakarta.servlet.FilterChain;
@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -37,7 +38,9 @@ public class JWTAuthFilter extends OncePerRequestFilter {
         if (authenticationHeader != null && authenticationHeader.startsWith("Bearer ")) {
             token = authenticationHeader.substring(7);
             try{
-            userName = jwtUtility.extractUserName(token);}
+            userName = jwtUtility.extractUserName(token);
+                MDC.put(userName,token);
+            }
             catch (Exception e){
                 log.info("exception");}
         }

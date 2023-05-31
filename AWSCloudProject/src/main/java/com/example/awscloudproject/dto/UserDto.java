@@ -13,6 +13,8 @@ public class UserDto {
     private String lastName;
     private String password;
     private String email;
+    private String accountCreated;
+    private String accountUpdated;
     private List<String> roles;
 }
 
