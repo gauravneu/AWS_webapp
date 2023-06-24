@@ -37,12 +37,12 @@ public class JWTAuthFilter extends OncePerRequestFilter {
         String token = null, userName = null;
         if (authenticationHeader != null && authenticationHeader.startsWith("Bearer ")) {
             token = authenticationHeader.substring(7);
-            try{
-            userName = jwtUtility.extractUserName(token);
-                MDC.put(userName,token);
+            try {
+                userName = jwtUtility.extractUserName(token);
+                MDC.put(userName, token);
+            } catch (Exception e) {
+                log.info("exception");
             }
-            catch (Exception e){
-                log.info("exception");}
         }
         if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailService.loadUserByUsername(userName);

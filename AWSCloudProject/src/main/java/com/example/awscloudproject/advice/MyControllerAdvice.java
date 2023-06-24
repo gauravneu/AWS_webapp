@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class MyControllerAdvice {
 
     @ExceptionHandler(Exception.class)
-    public String handleException(Exception ex){
+    public String handleException(Exception ex) {
         return ex.getMessage();
     }
 }

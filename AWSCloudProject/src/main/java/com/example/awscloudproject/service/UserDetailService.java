@@ -43,17 +43,41 @@ public class UserDetailService implements UserDetailsService {
         return opt;
     }
 
-    public String saveUser(UserDto userDto) {
+
+    public UserDto updateUser(UserDto userDto){
+        Optional<UserEntity> ue1 = userRepository.findUserByEmail(userDto.getUsername());
+        ue1.get().setPassword(passwordEncoder.encode(userDto.getPassword()));
+        ue1.get().setFirstName(userDto.getFirstName());
+        ue1.get().setLastName(userDto.getLastName());
+        UserEntity ue2 = userRepository.save(ue1.get());
+
+        return UserDto.builder()
+                .id(ue2.getUserId())
+                .firstName(ue2.getFirstName())
+                .lastName(ue2.getLastName())
+                .username(ue2.getEmail())
+                .accountCreated(ue2.getAccountCreated())
+                .accountUpdated(ue2.getAccountUpdated()).build();
+    }
+
+
+    public UserDto saveUser(UserDto userDto) {
         String encodedPassword = passwordEncoder.encode(userDto.getPassword());
         UserEntity userEntity = UserEntity
                 .builder()
                 .firstName(userDto.getFirstName())
                 .lastName(userDto.getLastName())
                 .password(encodedPassword)
-                .email(userDto.getEmail())
+                .email(userDto.getUsername())
                 .roles(userDto.getRoles()).build();
         userEntity = userRepository.save(userEntity);
 
-        return userEntity.getUserId();
+        return UserDto.builder()
+                .id(userEntity.getUserId())
+                .firstName(userEntity.getFirstName())
+                .lastName(userEntity.getLastName())
+                .username(userEntity.getEmail())
+                .accountCreated(userEntity.getAccountCreated())
+                .accountUpdated(userEntity.getAccountUpdated()).build();
     }
 }

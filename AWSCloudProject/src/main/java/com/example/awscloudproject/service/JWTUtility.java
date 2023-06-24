@@ -1,9 +1,8 @@
 package com.example.awscloudproject.service;
 
-import com.example.awscloudproject.exception.CloudProjectException;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.SignatureException;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,20 +31,20 @@ public class JWTUtility {
                 .signWith(key, SignatureAlgorithm.HS512).compact();
     }
 
-    public String extractUserName(String token) /*throws CloudProjectException */{
-      /*  if(validateToken(token,null))*/
+    public String extractUserName(String token) /*throws CloudProjectException */ {
+        /*  if(validateToken(token,null))*/
         return Jwts.parserBuilder()
                 .setSigningKey(key).build()
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
-   /*     else throw new MalformedJwtException("Malformed");*/
+        /*     else throw new MalformedJwtException("Malformed");*/
     }
 
-    public boolean validateToken(String token, UserDetails userDetails) /*throws CloudProjectException */{
-            /*try{*/
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-            return true;
+    public boolean validateToken(String token, UserDetails userDetails) /*throws CloudProjectException */ {
+        /*try{*/
+        Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+        return true;
       /*  } catch (Exception ex) {
             throw new CloudProjectException("JWT Token malformed",ex);
         }*/
