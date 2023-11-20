@@ -36,7 +36,7 @@ public class UserController {
     @PostMapping("/saveUser")
     public ResponseEntity<?> saveUser(@RequestBody UserDto user, HttpServletResponse response) throws IOException {
         if (userDetailService.getUserEntityByEmail(user.getUsername()).isPresent()) {
-            System.out.println("Bad User");
+            log.info("Bad User");
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         } else {
             UserDto ud1 = userDetailService.saveUser(user);

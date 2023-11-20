@@ -15,20 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration {
-    private static final String[] AUTH_WHITELIST = {
-            "/authenticate",
-            "/swagger-resources",
-            "/swagger-resources/**",
-            "/configuration/ui",
-            "/configuration/security",
-            "/swagger-ui.html",
-            "/webjars/**",
-            "/v3/api-docs/**",
-            "/api/public/**",
-            "/api/public/authenticate",
-            "/actuator/*",
-            "/swagger-ui/**"
-    };
+
     private final JWTAuthFilter jwtAuthFilter;
     private final AuthEntryPointImpl authEntryPoint;
 
@@ -39,9 +26,10 @@ public class SecurityConfiguration {
                 .exceptionHandling(auth -> auth.authenticationEntryPoint(authEntryPoint))
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth.
-                        requestMatchers("/WithoutAuth", "/saveUser", "/swagger-ui.html").permitAll()
-                        .requestMatchers(AUTH_WHITELIST).permitAll()
-                        .requestMatchers("/getUser//?email=.*").hasAnyAuthority("USER", "ADMIN")
+                        requestMatchers("/WithoutAuth","/saveUser").permitAll()
+                    //    requestMatchers(AUTH_WHITELIST).permitAll()
+                       //    .requestMatchers(AUTH_WHITELIST).permitAll()
+                        .requestMatchers("/saveUser").hasAnyAuthority("USER", "ADMIN")
                         .anyRequest().authenticated()
                 ).addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class).build();
     }
