@@ -9,9 +9,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.util.List;
-
-
 @Entity
 @Data
 @Table(name = "users")
@@ -19,36 +16,29 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 public class UserEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "user_id")
-    private String userId;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  @Column(name = "user_id")
+  private String userId;
 
-    @Column(name = "first_name")
-    private String firstName;
+  @Column(name = "first_name")
+  private String firstName;
 
-    @Column(name = "last_name")
-    private String lastName;
+  @Column(name = "last_name")
+  private String lastName;
 
-    @Column(name = "account_created", updatable = false)
-    @CreationTimestamp
-    private String accountCreated;
+  @Column(name = "account_created", updatable = false)
+  @CreationTimestamp
+  private String accountCreated;
 
-    @Column(name = "account_updated")
-    @UpdateTimestamp
-    private String accountUpdated;
+  @Column(name = "account_updated")
+  @UpdateTimestamp
+  private String accountUpdated;
 
-    @Column(name = "user_passwd")
-    private String password;
+  @Column(name = "user_passwd")
+  private String password;
 
-    @Column(name = "user_email")
-    @Email
-    private String email;
-
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "roles",
-            joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "user_role")
-    private List<String> roles;
-
+  @Column(name = "user_email")
+  @Email
+  private String email;
 }

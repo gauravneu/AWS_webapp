@@ -2,12 +2,13 @@ package com.example.awscloudproject.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 
-@AllArgsConstructor
 @Builder
 @Getter
-public class CloudProjectException extends Exception {
-    private String message;
-    private Exception ex;
+@Data
+@AllArgsConstructor
+public class AlreadyExistingUserException extends RuntimeException {
+  private String message;
 }
