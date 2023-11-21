@@ -50,17 +50,17 @@ public class MyControllerAdvice {
     return "Request Body is Required";
   }
 
-  /** @throws 400 Bad Request if No Request Body is sent to authenticate user */
+  /** @throws 401 Bad Request if No Request Body is sent to authenticate user */
   @ExceptionHandler(UserDoesNotExistException.class)
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ResponseStatus(HttpStatus.UNAUTHORIZED)
   @ResponseBody
   public String handleUserDoesNotExistException(UserDoesNotExistException ex) {
     return "User does not exist";
   }
 
-  /** @throws 400 Bad Request if No Token is provided for protected endpoint */
+  /** @throws 401 Bad Request if No Token is provided for protected endpoint */
   @ExceptionHandler(NoHandlerFoundException.class)
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ResponseStatus(HttpStatus.UNAUTHORIZED)
   @ResponseBody
   public String handleNoHandlerFoundException(NoHandlerFoundException ex) {
     return "Incorrect endpoint";
@@ -70,22 +70,22 @@ public class MyControllerAdvice {
   @ExceptionHandler(InsufficientAuthenticationException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ResponseBody
-  public String handleException(InsufficientAuthenticationException ex) {
+  public String handleInsufficientAuthenticationException(InsufficientAuthenticationException ex) {
     return "Insufficient Authentication";
   }
 
   @ExceptionHandler(ImproperInputException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ResponseBody
-  public String handleException(ImproperInputException ex) {
+  public String handleImproperInputException(ImproperInputException ex) {
     return "Provide correct userName";
   }
 
   @ExceptionHandler(Exception.class)
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ResponseStatus(HttpStatus.FAILED_DEPENDENCY)
   @ResponseBody
   public String handleException(Exception ex) {
     log.info(ex.toString());
-    return "User does not exist";
+    return "Failed to process request";
   }
 }

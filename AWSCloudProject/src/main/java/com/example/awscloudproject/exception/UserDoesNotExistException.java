@@ -1,10 +1,10 @@
 package com.example.awscloudproject.exception;
 
-public class UserDoesNotExistException extends Exception {
-  private String message;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
-  public UserDoesNotExistException(String message) {
-    super(message);
-    this.message = message;
-  }
+@Data
+@RequiredArgsConstructor
+public class UserDoesNotExistException extends Exception {
+  private final String message;
 }

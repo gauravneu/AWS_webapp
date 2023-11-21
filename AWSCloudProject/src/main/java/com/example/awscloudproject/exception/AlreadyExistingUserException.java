@@ -1,14 +1,11 @@
 package com.example.awscloudproject.exception;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 
 @Builder
 @Getter
 @Data
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AlreadyExistingUserException extends RuntimeException {
-  private String message;
+  private final String message;
 }
