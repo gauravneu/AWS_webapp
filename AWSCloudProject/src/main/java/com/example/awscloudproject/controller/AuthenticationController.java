@@ -1,8 +1,7 @@
 package com.example.awscloudproject.controller;
 
-import static com.example.awscloudproject.utility.JWTUtility.generateToken;
-
 import com.example.awscloudproject.dto.AuthRequest;
+import com.example.awscloudproject.service.JWTService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @AllArgsConstructor
 public class AuthenticationController {
-
+  private final JWTService jwtService;
   private final AuthenticationManager authenticationManager;
 
   @PostMapping("/authenticate")
@@ -29,11 +28,12 @@ public class AuthenticationController {
               new UsernamePasswordAuthenticationToken(
                   authRequest.getUserName(), authRequest.getPassword()));
       if (authentication.isAuthenticated()) {
-        return generateToken(authRequest.getUserName());
+        return jwtService.generateToken(authRequest.getUserName());
+      } else {
+        throw new BadCredentialsException("Authentication Failure");
       }
     } catch (BadCredentialsException ex) {
       throw new BadCredentialsException("Invalid Credentials");
     }
-    return null;
   }
 }
