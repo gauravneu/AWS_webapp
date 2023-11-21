@@ -1,6 +1,8 @@
 package com.example.awscloudproject.config;
 
-import com.example.awscloudproject.service.JWTUtility;
+import static com.example.awscloudproject.utility.JWTUtility.extractUserName;
+import static com.example.awscloudproject.utility.JWTUtility.validateToken;
+
 import com.example.awscloudproject.service.UserDetailService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -22,7 +24,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @AllArgsConstructor
 @Slf4j
 public class JWTAuthFilter extends OncePerRequestFilter {
-  private final JWTUtility jwtUtility;
   private final UserDetailService userDetailService;
 
   @Override
@@ -35,7 +36,7 @@ public class JWTAuthFilter extends OncePerRequestFilter {
     if (authenticationHeader != null && authenticationHeader.startsWith("Bearer ")) {
       token = authenticationHeader.substring(7);
       try {
-        userName = jwtUtility.extractUserName(token);
+        userName = extractUserName(token);
         MDC.put(userName, token);
       } catch (Exception e) {
         log.info("exception");
@@ -43,7 +44,7 @@ public class JWTAuthFilter extends OncePerRequestFilter {
     }
     if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
       UserDetails userDetails = userDetailService.loadUserByUsername(userName);
-      if (jwtUtility.validateToken(token, userDetails)) {
+      if (validateToken(token, userDetails)) {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
             new UsernamePasswordAuthenticationToken(
                 userDetails, null, userDetails.getAuthorities());

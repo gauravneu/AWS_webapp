@@ -1,7 +1,8 @@
 package com.example.awscloudproject.controller;
 
+import static com.example.awscloudproject.utility.JWTUtility.generateToken;
+
 import com.example.awscloudproject.dto.AuthRequest;
-import com.example.awscloudproject.service.JWTUtility;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
 
   private final AuthenticationManager authenticationManager;
-  private final JWTUtility jwtUtility;
 
   @PostMapping("/authenticate")
   public String authentication(@Valid @RequestBody(required = true) AuthRequest authRequest) {
@@ -29,7 +29,7 @@ public class AuthenticationController {
               new UsernamePasswordAuthenticationToken(
                   authRequest.getUserName(), authRequest.getPassword()));
       if (authentication.isAuthenticated()) {
-        return jwtUtility.generateToken(authRequest.getUserName());
+        return generateToken(authRequest.getUserName());
       }
     } catch (BadCredentialsException ex) {
       throw new BadCredentialsException("Invalid Credentials");
